@@ -1,4 +1,23 @@
-class ConnectedComponent():
+from PIL.Image import open as image_open
+from PIL.ImageOps import grayscale
+import numpy as np
+import PIL.Image.Image
+
+# dave = Image("./some_path.png")
+# dave.image.show()
+# dave.data
+
+class Image():
+    def __init__(self, path):
+        self.image = image_open(path)
+        self.data = np.array(self.image)
+
+    def grayscale(self):
+        self.grayscale = grayscale(self.image)
+        self.grayscale_data = np.array(self.grayscale)
+
+
+class ConnectedComponent(Image):
     def __init__(self, seed_pixel, label):
         self.seed_pixel = seed_pixel
         self.pixels = {seed_pixel}
@@ -33,7 +52,7 @@ class Pixel():
     X=None #the size of the x dimension of the image
     Y=None #the size of the y dimension of the image
 
-    def __init__(self, x, y, color, X=None, Y=None):
+    def __init__(self, x, y, color=None, X=None, Y=None):
         self.x = x
         self.y = y
         self.color = color
@@ -50,4 +69,5 @@ class Pixel():
                   (self.x-1, self.y),
                   (self.x, self.y+1),
                   (self.x, self.y-1)]
+        neighbors = [Pixel(coordinate[0], coordinate[1]) for coordinate in result]
         return [(i, j) for (i, j) in result if (i >= 0) and i < Pixel.X and j >= 0 and j < Pixel.Y]
