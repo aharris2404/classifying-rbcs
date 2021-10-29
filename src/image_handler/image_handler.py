@@ -85,3 +85,12 @@ class ImageHandler():
                 return c
 
         return False
+
+    def mask_component(self, label):
+        component = self.get_component(label)
+
+        if component:
+            # Return masked array containing only pixels in the bounding box of that image
+            pass
+
+        return self.array
