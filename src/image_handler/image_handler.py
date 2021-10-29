@@ -9,8 +9,8 @@ class ImageHandler():
             
             self.array = array
             self.X, self.Y = array.shape[0], array.shape[1]            
-            # self.connected_components = self._find_connected_components()
-        except Exception as inst: 
+            self.connected_components = self._find_connected_components()
+        except NotImplementedError as inst: 
             print("Only grayscale images supported currently")
 
 
@@ -74,6 +74,7 @@ class ImageHandler():
             if component.contains(other):
                 component + other
                 self.connected_components.remove(other)
+            
             elif other.contains(component):
                 component + other
                 self.connected_components.remove(component)

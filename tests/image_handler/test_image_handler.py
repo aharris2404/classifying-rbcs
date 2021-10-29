@@ -27,6 +27,7 @@ class TestImageHandler(unittest.TestCase):
     def test_grow_component(self):
         component = self.image._grow_component((1,1), set([(i, j) for i in range(self.image.X) 
                                                                   for j in range(self.image.Y)]))
+        
         self.assertEqual(len(component), 16, "Outer white ring should contain no white pixels")
         self.assertNotIn((0,0), component, "Outer black ring should not be in component")
         self.assertNotIn((2,2), component, "Inner black ring should not be in component")
@@ -34,11 +35,19 @@ class TestImageHandler(unittest.TestCase):
 
     def test_find_connected_components(self):
         components = self.image._find_connected_components(color=255)
+        
         self.assertEqual(len(components), 2, "Two white components in two_test.png")
         self.assertListEqual(sorted([len(c.pixels) for c in components]), [1, 16], "Sorted lengths of two white components in two_test.png")
 
     def test_filter_contained_boxes(self):
-        pass
+        self.image.filter_contained_boxes()
+
+        self.assertEqual(len(self.image.connected_components), 1, "Only one component after filteration in two_test.png")
+        
+        # TODO: write function in image handler to access each component in connected_components
+        # self.assertEqual(self.image.connected_components, 17, "Components should be added together")
+        # self.assertEqual(self.image.connected_components.label, 0, "Label should update to smallest label in addition")
+
 
     def test_color_image_failure(self):
         pass

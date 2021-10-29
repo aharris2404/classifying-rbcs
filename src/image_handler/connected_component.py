@@ -37,7 +37,7 @@ class ConnectedComponent():
 
     def __add__(self, other):
         self.seed_pixels.extend(other.seed_pixels)
-        self.pixels = self.pixels + other.pixels
+        self.pixels |= other.pixels
         self.label = min(self.label, other.label)
         self._update_bound_box()
     
