@@ -12,7 +12,7 @@ class TestConnectedComponent(unittest.TestCase):
     def tearDown(self):
         self.component.clear()
 
-    
+
     def test_hash(self):
         self.assertEqual(hash(self.component), hash(self.label), "Hash should be based on a label")
 
