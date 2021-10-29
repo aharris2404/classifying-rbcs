@@ -6,3 +6,4 @@ tests/image_handler/__pycache__/*
 build/*
 src/rbc_classifier.egg-info/*
 src/__pycache__/*
+.vscode
