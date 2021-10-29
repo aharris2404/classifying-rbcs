@@ -43,3 +43,7 @@ class ConnectedComponent():
     
     def __eq__(self, other):
         return self.label == other.label
+
+    # Returns true if component contains pixels
+    def __bool__(self):
+        return bool(self.pixels)
