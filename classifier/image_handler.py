@@ -4,7 +4,7 @@ from connected_component import ConnectedComponent
 class ImageHandler():
     def __init__(self, array): #array might be 2d or 3d
         try:
-            if len(shape.array) > 2:
+            if len(self.array.shape) > 2:
                 raise NotImplementedError
             
             self.array = array
@@ -77,4 +77,3 @@ class ImageHandler():
             elif other.contains(component):
                 component + other
                 self.connected_components.remove(component)
-
