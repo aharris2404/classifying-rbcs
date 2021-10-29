@@ -1,2 +1,6 @@
 .ipynb_checkpoints
 __pycache__/*
+src/image_handler/__pycache__/*
+tests/__pycache__/*
+tests/image_handler/__pycache__/*
+build/*

@@ -6,6 +6,13 @@ class ConnectedComponent():
         self.bound_box = {}
         self._update_bound_box()
 
+    def clear(self):
+        self.seed_pixels = []
+        self.pixels = set()
+        self.label = None
+        self.bound_box = {}
+
+
     def _update_bound_box(self):
         pixels = self.pixels.copy()
         while pixels:
