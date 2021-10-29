@@ -44,10 +44,9 @@ class TestImageHandler(unittest.TestCase):
 
         self.assertEqual(len(self.image.connected_components), 1, "Only one component after filteration in two_test.png")
         
-        # TODO: write function in image handler to access each component in connected_components
-        # self.assertEqual(self.image.connected_components, 17, "Components should be added together")
-        # self.assertEqual(self.image.connected_components.label, 0, "Label should update to smallest label in addition")
-
+        new_component = self.image.get_component(0)
+        self.assertEqual(len(new_component.pixels), 17, "Components should be added together")
+        self.assertFalse(self.image.get_component(1), "Component 1 should not exist")
 
     def test_color_image_failure(self):
         pass

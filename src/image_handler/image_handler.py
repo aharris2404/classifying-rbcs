@@ -78,3 +78,10 @@ class ImageHandler():
             elif other.contains(component):
                 component + other
                 self.connected_components.remove(component)
+
+    def get_component(self, label):
+        for c in self.connected_components:
+            if c.label == label:
+                return c
+
+        return False
