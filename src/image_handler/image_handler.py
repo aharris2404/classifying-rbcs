@@ -2,14 +2,14 @@ import numpy as np
 from src.image_handler.connected_component import ConnectedComponent
 
 class ImageHandler():
-    def __init__(self, array): #array might be 2d or 3d
+    def __init__(self, array, color=255): #array might be 2d or 3d
         try:
             if len(array.shape) > 2:
                 raise NotImplementedError
             
             self.array = array
             self.X, self.Y = array.shape[0], array.shape[1]            
-            self.connected_components = self._find_connected_components()
+            self.connected_components = self._find_connected_components(color=color)
         except NotImplementedError as inst: 
             print("Only grayscale images supported currently")
 

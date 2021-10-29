@@ -2,6 +2,7 @@ class ConnectedComponent():
     def __init__(self, seed_pixel, component, label): #refactor to move growing components into image handler
         self.seed_pixels = [seed_pixel]
         self.pixels = component
+        #TODO: Verify seed_pixel in pixels
         self.label = label
         self.bound_box = {}
         self._update_bound_box()
