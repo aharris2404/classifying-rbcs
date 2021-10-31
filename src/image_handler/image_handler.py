@@ -1,5 +1,5 @@
 import numpy as np
-from src.image_handler.connected_component import ConnectedComponent
+from .connected_component import ConnectedComponent
 
 class ImageHandler():
     def __init__(self, array, color=255): #array might be 2d or 3d
@@ -86,11 +86,16 @@ class ImageHandler():
 
         return False
 
-    def mask_component(self, label):
+    def filter_components_by_size(self, min_size=0, max_size=float('inf')):
+        allowed_components = set()
+
+        self.connected_components = set([c for c in self.connected_components 
+                                            if len(c) >= min_size and len(c) <= max_size])
+
+
+    def crop_to_component(self, label):
         component = self.get_component(label)
 
         if component:
-            # Return masked array containing only pixels in the bounding box of that image
-            pass
-
-        return self.array
+            min_x, min_y, max_x, max_y = component.get_bound_box()
+            return self.array[min_x:max_x, min_y:max_y]
