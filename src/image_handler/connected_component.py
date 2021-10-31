@@ -48,3 +48,6 @@ class ConnectedComponent():
     # Returns true if component contains pixels
     def __bool__(self):
         return bool(self.pixels)
+
+    def __len__(self):
+        return len(self.pixels)
