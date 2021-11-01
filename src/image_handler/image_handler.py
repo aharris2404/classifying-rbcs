@@ -4,11 +4,11 @@ from .connected_component import ConnectedComponent
 class ImageHandler():
     def __init__(self, array, color=255): #array might be 2d or 3d
         try:
-            if len(array.shape) > 2:
+            if len(array.shape) != 2:
                 raise NotImplementedError
             
             self.array = array
-            self.X, self.Y = array.shape[0], array.shape[1]            
+            self.X, self.Y = array.shape[0], array.shape[1]
             self.connected_components = self._find_connected_components(color=color)
         except NotImplementedError as inst: 
             print("Only grayscale images supported currently")
@@ -20,13 +20,13 @@ class ImageHandler():
         component = {seed}
 
         while queue:
-            curr_pixel = queue.pop()
+            curr_pixel = queue.pop(0)
             all_neighbors = self._get_cardinal_neighbors(curr_pixel)
             unvisited_neighbors = [neighbor for neighbor in all_neighbors 
                                     if self.color_at(neighbor) == self.color_at(curr_pixel)
                                     and neighbor in unvisited]
 
-            unvisited = unvisited - set(unvisited_neighbors)
+            unvisited -= set(unvisited_neighbors)
             component |= set(unvisited_neighbors)
 
             queue.extend(unvisited_neighbors)
@@ -46,6 +46,7 @@ class ImageHandler():
             curr_component = self._grow_component(seed_pixel, unvisited_pixels)
             unvisited_pixels -= curr_component
             result.add(ConnectedComponent(seed_pixel, curr_component, label))
+
             label += 1
         
         return result
@@ -54,6 +55,9 @@ class ImageHandler():
     def color_at(self, loc):
         x, y = loc
         return self.array[x][y]
+
+    def get_components(self):
+        return self.connected_components
 
     def _get_cardinal_neighbors(self, loc):
         x, y = loc
@@ -71,13 +75,16 @@ class ImageHandler():
 
         for component, other in component_pairs:
             
+            if component not in self.connected_components or other not in self.connected_components:
+                continue
+
             if component.contains(other):
                 component + other
-                self.connected_components.remove(other)
+                self.connected_components -= {other}
             
             elif other.contains(component):
                 component + other
-                self.connected_components.remove(component)
+                self.connected_components -= {component}
 
     def get_component(self, label):
         for c in self.connected_components:
