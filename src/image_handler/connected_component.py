@@ -6,6 +6,7 @@ class ConnectedComponent():
         self.label = label
         self.bound_box = {}
         self._update_bound_box()
+        self.size_changed = False
 
     def clear(self):
         self.seed_pixels = []
@@ -24,9 +25,14 @@ class ConnectedComponent():
             self.bound_box['y_max'] = max(self.bound_box.get('y_max', y), y)
     
     def get_bound_box(self):
-        self._update_bound_box()
+        if self.size_changed:
+            self._update_bound_box()
+
         return (self.bound_box['x_min'], self.bound_box['y_min'],
                 self.bound_box['x_max'], self.bound_box['y_max'])
+
+    def _get_bound_keys(self):
+        return ("x_min", "y_min", "x_max", "y_max")
 
     def contains(self, other):
         x_min, y_min, x_max, y_max = self.get_bound_box()
@@ -40,7 +46,18 @@ class ConnectedComponent():
         self.seed_pixels.extend(other.seed_pixels)
         self.pixels |= other.pixels
         self.label = min(self.label, other.label)
-        self._update_bound_box()
+
+        #update bounding boxes
+        # TODO: Test this formulation
+        zipped_bounds = zip(self.get_bound_box(), other.get_bound_box())
+        funcs = [lambda x, y: min(x, y), lambda x, y: min(x, y), 
+                 lambda x, y: max(x, y), lambda x, y: max(x, y)]
+        self.bound_box = {
+            key: func(c, o) for key, (c, o), func in zip(self._get_bound_keys(), zipped_bounds, funcs)
+        }
+
+
+
     
     def __eq__(self, other):
         return self.label == other.label
@@ -48,3 +65,6 @@ class ConnectedComponent():
     # Returns true if component contains pixels
     def __bool__(self):
         return bool(self.pixels)
+
+    def __len__(self):
+        return len(self.pixels)
