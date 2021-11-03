@@ -12,8 +12,9 @@ class Filters():
 
     def __init__(self):
         pass
-
-    def show_image(self, image):
+    
+    @staticmethod
+    def show_image(image):
         plt.imshow(image, interpolation='nearest', cmap="gray")
         plt.show()
 
