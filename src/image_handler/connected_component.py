@@ -56,6 +56,8 @@ class ConnectedComponent():
             key: func(c, o) for key, (c, o), func in zip(self._get_bound_keys(), zipped_bounds, funcs)
         }
 
+        return self
+
 
 
     
