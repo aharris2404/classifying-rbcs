@@ -21,14 +21,19 @@ def main():
         im = filters.open_image(image)
         im_array = filters.run_initial_pipeline(image)
 
-        filters.show_image(im_array)
+        # filters.show_image(im_array)
         
         # Find connected components in image
         im_graph = ImageHandler(im_array)
 
         im_graph.filter_components_by_size(min_size=100, max_size=3000)
-        print(f"Post Filtering: We have {len(im_graph.get_components())}")
-        im_graph.filter_contained_boxes()
+        print(f"Post Size Filtering: We have {len(im_graph.connected_components.keys())} components")
+        
+        # im_graph.filter_contained_boxes()
+        im_graph.filter_median_set_distance(tol=30)
+
+        print(f"Post Closeness Filtering: We have {len(im_graph.get_components())}")
+
 
         # Display all the components algorithm above found
         bounding_box_mask = np.full(im_array.shape, False)
@@ -39,8 +44,8 @@ def main():
         masked_im = im.copy()
         masked_im[bounding_box_mask, :] = 0
 
-        # pyplot.imshow(im)
-        pyplot.imshow(masked_im)
+        pyplot.imshow(im)
+        # pyplot.imshow(masked_im)
         pyplot.show()
 
         # filters.show_image(masked_im)
